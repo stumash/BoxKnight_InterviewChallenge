@@ -1,6 +1,10 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import request from 'request-promise-native';
+import _ from 'lodash';
+
+import {providersByName} from './shipping/providers/provider';
+import Location from './shipping/location';
+import ShipmentDeal from './shipping/deal';
 
 const port = 8000;
 
@@ -8,24 +12,24 @@ const jsonParser = bodyParser.json();
 const app = express();
 
 app.post('/getBestShippingRate', jsonParser, async (req, res) => {
-    const destination = req.body;
+    const destination: Location = req.body;
 
-    // canada post
-    const cp_url = `https://7ywg61mqp6.execute-api.us-east-1.amazonaws.com/prod/rates/${postalCode}`;
-    const cp_bestDeal = request.get({'uri':cp_url, 'json':true})
-        .then((deals) => {
-            const minPrice = Math.min(...deals.map(deal => deal['price']));
-            const cheapestDeals = 
-        });
+    // this parallelizes requests to all shipment providers
+    const deals: ShipmentDeal[] = _.flatten(await Promise.all(
+        _.map(providersByName, provider => provider.getDeals(destination.postalCode))
+    ));
 
-    // box knight
-    const bk_url = `https://lo2frq9f4l.execute-api.us-east-1.amazonaws.com/prod/rates/${postalCode}`;
-    const bk_bestDeal = await request.get({'uri':bk_url, 'json':true})
+    // uncomment this to instead sequentially send requests to all shipment providers
+    //const deals: ShipmentDeal[] = [];
+    //for (let provider of providers) {
+        //deals.concat(await provider.getDeals(destination.postalCode));
+    //}
 
-    console.log(`cp rate: ${JSON.stringify(cp_bestDeal, null, 4)}`);
-    console.log(`bk rate: ${JSON.stringify(bk_bestDeal, null, 4)}`);
+    const bestDeal = _.sortBy(deals, ['price', 'estimate_days'])[0];
 
-    res.send(postalCode);
+    res.send(bestDeal);
+
+    let order = await providersByName[bestDeal.provider_name].orderShipment(destination, bestDeal));
 });
 
 app.listen(port);
