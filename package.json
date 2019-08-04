@@ -4,7 +4,8 @@
   "description": "",
   "main": "bestRate.js",
   "scripts": {
-    "serve": "./node_modules/typescript/bin/tsc -p ./ && node build/app.js",
+    "dev": "./node_modules/typescript/bin/tsc -p ./ && node build/app.js",
+    "prod": "./node_modules/typescript/bin/tsc -p ./ && node build/app.js 80",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
