@@ -12,7 +12,7 @@ interface ShipmentProvider {
     orderShipment(destination: Location, deal: ShipmentDeal): Promise<void>,
 }
 
-const providers = [canadaPost, boxKnight];
+const providers: ShipmentProvider[] = [canadaPost, boxKnight];
 const providersByName = _.keyBy(providers, 'providerName');
 
 export {ShipmentProvider, providersByName};

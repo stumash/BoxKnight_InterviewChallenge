@@ -7,14 +7,14 @@ import Location from '../location'
 
 class CanadaPost implements ShipmentProvider {
     readonly providerName: string = 'Canada Post';
-    async getDeals(postalCode: string) {
+    async getDeals(postalCode: string): Promise<ShipmentDeal[]> {
         const url = 'https://7ywg61mqp6.execute-api.us-east-1.amazonaws.com/prod/rates/';
         const deals = await request.get({'uri':url+postalCode, 'json':true});
         _.forEach(deals, deal => {deal['provider_name'] = this.providerName;});
 
         return deals;
     }
-    async orderShipment(destination: Location, deal: ShipmentDeal) {
+    async orderShipment(destination: Location, deal: ShipmentDeal): Promise<void> {
         const url = 'https://7ywg61mqp6.execute-api.us-east-1.amazonaws.com/prod/shipments';
         return await request.post({
             'url': url,

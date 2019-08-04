@@ -25,11 +25,12 @@ app.post('/getBestShippingRate', jsonParser, async (req, res) => {
         //deals.concat(await provider.getDeals(destination.postalCode));
     //}
 
-    const bestDeal = _.sortBy(deals, ['price', 'estimate_days'])[0];
+    const bestDeal: ShipmentDeal = _.sortBy(deals, ['price', 'estimate_days'])[0];
 
     res.send(bestDeal);
 
-    let order = await providersByName[bestDeal.provider_name].orderShipment(destination, bestDeal));
+    const bestProvider = providersByName[bestDeal.provider_name];
+    const order = await bestProvider.orderShipment(destination, bestDeal);
 });
 
 app.listen(port);
