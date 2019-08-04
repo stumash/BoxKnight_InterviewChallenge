@@ -6,7 +6,7 @@ import {providersByName} from './shipping/providers/provider';
 import Location from './shipping/location';
 import ShipmentDeal from './shipping/deal';
 
-const port = process.argv[2]? process.argv[2]: 8000;
+const port = 8000;
 
 const jsonParser = bodyParser.json();
 const app = express();
