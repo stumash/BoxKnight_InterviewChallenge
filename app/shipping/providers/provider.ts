@@ -8,7 +8,7 @@ import boxKnight from './boxKnight';
 
 interface ShipmentProvider {
     readonly providerName: string,
-    getDeals(postalCode: string): Promise<ShipmentDeal[]>,
+    getDeals(destination: Location): Promise<ShipmentDeal[]>,
     orderShipment(destination: Location, deal: ShipmentDeal): Promise<void>,
 }
 

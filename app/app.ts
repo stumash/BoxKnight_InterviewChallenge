@@ -16,7 +16,7 @@ app.post('/getBestShippingRate', jsonParser, async (req, res) => {
 
     // this parallelizes requests to all shipment providers
     const deals: ShipmentDeal[] = _.flatten(await Promise.all(
-        _.map(providersByName, provider => provider.getDeals(destination.postalCode))
+        _.map(providersByName, provider => provider.getDeals(destination))
     ));
 
     // uncomment this to instead sequentially send requests to all shipment providers
