@@ -30,7 +30,7 @@ app.post('/getBestShippingRate', jsonParser, async (req, res) => {
     res.send(bestDeal);
 
     const bestProvider = providersByName[bestDeal.provider_name];
-    const order = await bestProvider.orderShipment(destination, bestDeal);
+    const shipment = await bestProvider.orderShipment(destination, bestDeal);
 });
 
 app.listen(port);
