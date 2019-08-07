@@ -18,6 +18,7 @@ content-type=application/json
 
 ## ARCH.
 
+![provider](./docs/images/provider_interface.png)
 
 pseudo code of `app/app.ts`:
 
