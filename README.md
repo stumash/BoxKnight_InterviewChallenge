@@ -1,5 +1,13 @@
 # BoxKnight_InterviewChallenge
 
+## Install
+
+`git clone` and `npm install`
+
+## Run
+
+`npm run serve`
+
 ## API
 
 ```
